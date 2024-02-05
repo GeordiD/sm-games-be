@@ -1,21 +1,33 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
+    "target": "ES2019",
+    "lib": ["ES2020"],
+    "strict": true,
     "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
-    "incremental": true,
+    "esModuleInterop": true,
     "skipLibCheck": true,
-    "strictNullChecks": false,
+    "sourceMap": true,
+    "declaration": true,
+    "moduleResolution": "node",
+    "useUnknownInCatchVariables": false,
     "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
-  }
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": false,
+    "strictPropertyInitialization": false,
+    "alwaysStrict": true,
+    "outDir": "dist",
+    "typeRoots": ["node_modules/@types"],
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["server/*"]
+    }
+  },
+  "include": ["server/**/*.ts"],
+  "exclude": ["node_modules"]
 }
