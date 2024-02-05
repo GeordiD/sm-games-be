@@ -8,6 +8,7 @@ import l from './logger';
 
 import errorHandler from '../middlewares/error.handler';
 import * as OpenApiValidator from 'express-openapi-validator';
+import { _socketsService } from '@/services/socket.service';
 // import { setupAuth } from './auth';
 
 const app = express();
@@ -69,7 +70,12 @@ export default class ExpressServer {
         } @: ${os.hostname()} on port: ${p}}`
       );
 
-    http.createServer(app).listen(port, welcome(port));
+    const server = http.createServer(app);
+    
+    _socketsService.setup(server);
+
+    // setup express
+    server.listen(port, welcome(port));
 
     return app;
   }
