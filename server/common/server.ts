@@ -8,7 +8,7 @@ import l from './logger';
 
 import errorHandler from '../middlewares/error.handler';
 import * as OpenApiValidator from 'express-openapi-validator';
-import { setupAuth } from './auth';
+// import { setupAuth } from './auth';
 
 const app = express();
 
@@ -18,7 +18,7 @@ export default class ExpressServer {
   constructor() {
     this.setupParsing();
     this.setupFrontendServer();
-    setupAuth();
+    // setupAuth();
   }
 
   private setupParsing() {
