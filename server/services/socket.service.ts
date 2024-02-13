@@ -5,7 +5,7 @@ import { _envConfig } from '../common/envConfig';
 
 export class SocketService {
   private io: Server;
-  
+
   setup(server: http.Server) {
     this.io = new Server(server, {
       cors: {
@@ -13,13 +13,13 @@ export class SocketService {
       },
     });
 
-    const userId = Math.floor(Math.random() * 1000);
-
     this.io.on('connection', (socket) => {
+      const userId = Math.floor(Math.random() * 1000);
+
       socket.on('join', (roomId) => {
         socket.join(roomId);
-        l.info(`user#${userId} joined ${roomId}`)
-      })
+        l.info(`user#${userId} joined ${roomId}`);
+      });
 
       l.info(`user#${userId} connected`);
 

@@ -71,7 +71,7 @@ export default class ExpressServer {
       );
 
     const server = http.createServer(app);
-    
+
     _socketsService.setup(server);
 
     // setup express
