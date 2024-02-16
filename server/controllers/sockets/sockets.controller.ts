@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 export class SocketsController {
   sendUpdate(req: Request, res: Response): void {
-    const { eventName, payload } = JSON.parse(req.body) as {
+    const { eventName, payload } = req.body as {
       eventName: string;
       payload: unknown;
     };
