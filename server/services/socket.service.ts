@@ -1,4 +1,4 @@
-import { Namespace, Server } from 'socket.io';
+import { Server } from 'socket.io';
 import http from 'http';
 import l from '../common/logger';
 import { _envConfig } from '../common/envConfig';
@@ -13,20 +13,57 @@ export class SocketService {
       },
     });
 
-    this.io.on('connection', (socket) => {
-      const userId = Math.floor(Math.random() * 1000);
+    this.io.on('connection', async (socket) => {
+      const { playerId, roomId } = socket.handshake.query;
 
-      socket.on('join', (roomId) => {
-        socket.join(roomId);
-        l.info(`user#${userId} joined ${roomId}`);
+      // Guards
+      if (!roomId) {
+        console.error('no room id specified on connection. disconnecting');
+        socket.disconnect();
+        return;
+      }
+
+      if (typeof roomId !== 'string') {
+        console.error('roomId is not a string');
+        return;
+      }
+
+      if (typeof playerId !== 'string') {
+        console.error('playerId is not a string');
+        return;
+      }
+
+      socket.data.username = playerId;
+
+      // On connection
+      socket.join(roomId);
+      l.info(`${roomId}: ${playerId} connected`);
+
+      this.notify(roomId, 'roster', {
+        roster: [...(await this.whoIsInRoom(socket, roomId)), playerId],
+        change: {
+          playerId,
+          isJoining: true,
+        },
       });
 
-      l.info(`user#${userId} connected`);
-
-      socket.on('disconnect', () => {
-        l.info(`user#${userId} disconnected`);
+      // On disconnection
+      socket.on('disconnect', async () => {
+        l.info(`${roomId}: ${playerId} disconnected`);
+        this.notify(roomId, 'roster', {
+          roster: await this.whoIsInRoom(socket, roomId),
+          change: {
+            playerId,
+            isJoining: false,
+          },
+        });
       });
     });
+  }
+
+  private async whoIsInRoom(socket, roomId) {
+    const sockets = await socket.in(roomId).fetchSockets();
+    return sockets.map((x) => x.data.username);
   }
 
   notify(roomId: string, eventName: string, payload: unknown) {
