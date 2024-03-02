@@ -1,12 +1,12 @@
 version: '3.4'
 
 services:
-  gennodeserver:
-    image: gennodeserver
+  sm-games-be:
+    image: sm-games-be
     build:
       context: .
       dockerfile: ./Dockerfile
     environment:
       NODE_ENV: production
     ports:
-      - 3000:3000
+      - 4000:4000
