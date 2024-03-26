@@ -10,6 +10,7 @@ export class SocketService {
     this.io = new Server(server, {
       cors: {
         origin: _envConfig.getFromEnv('UI_URL'),
+        methods: ['GET', 'POST'],
       },
     });
 
