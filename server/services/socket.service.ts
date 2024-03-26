@@ -1,7 +1,7 @@
 import { Server } from 'socket.io';
 import http from 'http';
 import l from '../common/logger';
-import { _envConfig } from '../common/envConfig';
+// import { _envConfig } from '../common/envConfig';
 
 export class SocketService {
   private io: Server;
@@ -9,8 +9,7 @@ export class SocketService {
   setup(server: http.Server) {
     this.io = new Server(server, {
       cors: {
-        origin: _envConfig.getFromEnv('UI_URL'),
-        methods: ['GET', 'POST'],
+        origin: '*',
       },
     });
 
